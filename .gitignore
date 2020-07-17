@@ -1,3 +1,6 @@
 /.idea/
 /node_modules/
 setting.json
+server_data.json
+data.json
+userdata.json
