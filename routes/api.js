@@ -22,7 +22,8 @@ app.post('/create', (req, res, next) => {
         res.json({ "code" : "error" , "message" : "로그인 후 이용해주세요." });
         return;
     }
-    if(utils.getCount(req) < 1) {
+    const getCount = utils.getCount(req);
+    if(getCount < 1 && getCount != -1) {
         res.json({ "code" : "error" , "message" : "오늘 사용량을 초과하였습니다. 내일 다시 사용해주세요." });
         return;
     }

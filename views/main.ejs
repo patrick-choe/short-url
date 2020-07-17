@@ -8,7 +8,12 @@ if(logined) {
     userdata = userdb[user.id];
     username = `${user.username}#${user.discriminator}`;
     rank = userdata.RANK;
-    left_count = `${leftcount}회`;
+    if(leftcount == -1) {
+        left_count = `제한 없음`
+    }
+    else {
+        left_count = `${leftcount}회`;
+    }
     if(user.avatar != null) {
         avatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`;
     }
