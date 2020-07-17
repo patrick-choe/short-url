@@ -31,7 +31,6 @@ app.post('/create', (req, res, next) => {
     const parsedUrl = url.parse(req.url);
     const parsedQuery = querystring.parse(parsedUrl.query,'&','=');
     const fullurl = `${req.protocol}://${req.hostname}:${setting.PORT}${req.url}`;
-    console.log(fullurl);
     if(!validUrl.isWebUri(parsedQuery.url)) {
         res.json({ "code" : "error" , "message" : "주소가 잘못되었습니다." });
         return;
