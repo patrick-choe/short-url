@@ -36,15 +36,19 @@ app.post('/create', (req, res, next) => {
         res.json({ "code" : "error" , "message" : "주소가 잘못되었습니다." });
         return;
     }
+    if(parsedQuery.domain == null || parsedQuery.domain == '') {
+        res.json({ "code" : "error" , "message" : "Short URL 서버 도메인이 잘못되었습니다." });
+        return;
+    }
 
     const urls = JSON.parse(fs.readFileSync('./data.json'));
-    const rs = utils.randomstring(6);
-    urls[rs] = parsedQuery.url;
-    res.json({ "code" : "success" , "url" : `${protocol}${setting.DOMAIN}/${rs}` });
+    const rs = utils.randomstring(parsedQuery.domain, 6);
+    urls[`${parsedQuery.domain}||${rs}`] = parsedQuery.url;
+    res.json({ "code" : "success" , "url" : `${protocol}${parsedQuery.domain}/${rs}` });
     fs.writeFileSync('./data.json', JSON.stringify(urls));
 
     const userdata = JSON.parse(fs.readFileSync('./userdata.json'));
-    userdata[req.user.id]['left_count']--;
+    if(userdata[req.user.id]['left_count'] != -1) userdata[req.user.id]['left_count']--;
     fs.writeFileSync('./userdata.json', JSON.stringify(userdata));
     return;
 });

@@ -49,8 +49,19 @@ app.set('view engine', 'ejs');
 
 app.use((req, res, next) => {
     const urls = JSON.parse(fs.readFileSync('./data.json'));
-    if(urls.hasOwnProperty(req.url.replace('/', ''))) {
-        res.redirect(urls[req.url.replace('/', '')]);
+    const json_name = `${req.hostname}||${req.url.replace('/', '')}`;
+    if(urls.hasOwnProperty(json_name)) {
+        res.redirect(urls[json_name]);
+        return;
+    }
+    else {
+        next();
+    }
+});
+
+app.use((req, res, next) => {
+    if(req.hostname != setting.MAIN_DOMAIN) {
+        res.redirect(`${req.protocol}://${setting.MAIN_DOMAIN}${req.url}`);
         return;
     }
     else {
@@ -67,8 +78,7 @@ for(let i in filelist) {
 console.log('라우터를 모두 불러왔습니다.\n');
 
 app.use((req, res, next) => {
-    res.status(404).send(`<h1>${url.parse(req.url).pathname}을(를) 찾을 수 없습니다.</h1>`);
-    return;
+    res.redirect('/');
 });
 
 if(setting.USE_SSL) {

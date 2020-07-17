@@ -3,10 +3,10 @@ const randomstring = require('randomstring');
 
 const setting = require('./setting.json');
 
-module.exports.randomstring = (length) => {
+module.exports.randomstring = (domain, length) => {
     const urls = JSON.parse(fs.readFileSync('./data.json'));
     let rs = randomstring.generate(length);
-    while(urls.hasOwnProperty(rs)) {
+    while(urls.hasOwnProperty(`${domain}||${length}`)) {
         let rs = randomstring.generate(length);
     }
     return rs;
@@ -30,4 +30,22 @@ module.exports.getCount = (req) => {
     fs.writeFileSync('./userdata.json', JSON.stringify(userdata));
     fs.writeFileSync('./server_data.json', JSON.stringify(serverdata));
     return userdata[req.user.id]['left_count'];
+}
+
+module.exports.checkAdmin = (req, res) => {
+    if(!req.isAuthenticated()) {
+        res.redirect('/login');
+    }
+}
+
+module.exports.isAdmin = (req, res, next) => {
+    if(!req.isAuthenticated()) {
+        res.redirect('/login');
+        return;
+    }
+    if(setting.ADMIN.indexOf(req.user.id) == -1) {
+        res.redirect('/');
+        return;
+    }
+    next();
 }

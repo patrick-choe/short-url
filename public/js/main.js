@@ -12,8 +12,9 @@ window.onload = function() {
 
     document.getElementById('create_url').onclick = function() {
         var url_input = document.getElementById('input_url');
+        var domain = document.getElementById('domain');
         var clipboard_textarea = document.getElementById('clipboard_textarea');
-        var result = JSON.parse(Request('post', `/create?url=${url_input.value}`));
+        var result = JSON.parse(Request('post', `/create?url=${url_input.value}&domain=${domain.value}`));
         if(result.code == 'success') {
             showinfo(`<a href="${result.url}">${result.url}</a><br>자동으로 클립보드에 복사되었습니다!`, 2000);
             copyToClipboard(result.url);

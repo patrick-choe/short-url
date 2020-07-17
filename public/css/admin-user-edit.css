@@ -1,0 +1,48 @@
+#main_title {
+    font-size: 3.5vh;
+}
+.no_exist_user {
+    font-size: 2vh;
+}
+.product {
+    margin-bottom: -110px;
+    width: 30%;
+}
+.cart_title {
+    position: relative;
+    bottom: 160px;
+    left: 160px;
+}
+.cart_description {
+    position: relative;
+    bottom: 166px;
+    left: 160px;
+}
+.cart_price {
+    position: relative;
+    left: 160px;
+    bottom: 140px;
+}
+.cart_remove {
+    position: relative;
+    left: 240px;
+    bottom: 184px;
+}
+.inputbox, .save_data, p {
+    font-size: 2vh;
+}
+.inputbox, .save_data, #remove_group {
+    border: 1px solid #000000;
+}
+.history_remove {
+    position: relative;
+    left: 30vh;
+    bottom: 19vh;
+}
+#remove_group {
+    margin-top: 1vh;
+}
+#permission_edit {
+    width: 500px;
+    height: 300px;
+}
