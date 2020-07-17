@@ -1,0 +1,62 @@
+<%
+    let avatar;
+    let username;
+    let rank;
+    let left_count;
+    let userdata;
+if(logined) {
+    userdata = userdb[user.id];
+    username = `${user.username}#${user.discriminator}`;
+    rank = userdata.RANK;
+    left_count = `${leftcount}회`;
+    if(user.avatar != null) {
+        avatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`;
+    }
+    else {
+        avatar = `/img/guest.png`;
+    }
+}
+else {
+    username = `게스트`;
+    avatar = `/img/guest.png`;
+    rank = '로그인 후 이용';
+    left_count = '로그인 후 이용';
+}
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="/js/main.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <title>단축 URL 생성기</title>
+</head>
+
+<body>
+<div id="profile">
+    <img id="profile_image" src="<%=avatar%>">
+    <div id="profile_info" hidden>
+        <h3 class="profile_info_text" id="username"><%=username%></h3>
+        <p class="profile_info_text" id="rank">나의 등급 : <%=rank%></p>
+        <p class="profile_info_text" id="left_count">오늘 남은 횟수 : <%=left_count%></p>
+        <%if(logined) {%>
+            <a class="profile_info_text" id="login_logout" href="/logout">로그아웃</a>
+        <%} else {%>
+            <a class="profile_info_text" id="login_logout" href="/login">로그인</a>
+        <%}%>
+        <%if(logined && checkAdmin) {%>
+            <br><a class="profile_info_text" id="admin_menu" href="/admin">관리자 메뉴</a>
+        <%}%>
+    </div>
+</div>
+<h1 id="main_title">단축 URL 생성기</h1>
+<div id="product_before"></div>
+
+<div id="main">
+    <input id="input_url" type="url" placeholder="생성하길 원하는 URL을 입력하세요.">
+    <button id="create_url">URL 생성!</button>
+    <div id="info" style="opacity: 1;"></div>
+</div>
+</body>
+</html>

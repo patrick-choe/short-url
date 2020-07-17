@@ -1,0 +1,23 @@
+{
+  "PORT": YOUR_PORT,
+  "USE_SSL": false,
+  "SSL_CERT": "YOUR_SSL_CERT",
+  "SSL_KEY": "YOUR_SSL_KEY",
+  "DOMAIN": "YOUR_SHORT_URL_DOMAIN",
+
+  "DISCORD_CLIENT_ID": "DISCORD_OAUTH2_CLIENT_ID",
+  "DISCORD_CLIENT_SECRET": "DISCORD_OAUTH2_CLIENT_SECRET",
+  "DISCORD_CALLBACK_URL": "/login/callback",
+  "DISCORD_SCOPE": [ "identify" ],
+  "SESSION_SECRET": "secret",
+
+  "ADMIN": [
+    "ADMIN_DISCORD_ID"
+  ],
+
+  "RANK": {
+    "USER": {
+      "DAY_LIMIT": 5
+    }
+  }
+}
