@@ -46,6 +46,8 @@ app.get('/admin/:page', utils.isAdmin, (req, res, next) => {
                 });
             }
             break;
+        default:
+            res.redirect('/admin');
     }
 });
 
