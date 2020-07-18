@@ -66,7 +66,7 @@ app.post('/create', (req, res, next) => {
 app.post('/api', (req, res, next) => {
     const parsedUrl = url.parse(req.url);
     const parsedQuery = querystring.parse(parsedUrl.query,'&','=');
-    if(parsedQuery.apikey != setting.SECRET_KEY) {
+    if(parsedQuery.apikey != setting.API_KEY) {
         res.json({ "code" : "error" , "message" : "API 키가 알맞지 않습니다." });
         return;
     }
@@ -83,7 +83,7 @@ app.post('/api', (req, res, next) => {
 
     const urls = JSON.parse(fs.readFileSync('./data.json'));
     let rs;
-    if(parsedQuery.customurl != '') {
+    if(parsedQuery.customurl != '' && parsedQuery.customurl != null) {
         if(urls.hasOwnProperty(`${parsedQuery.domain}||${parsedQuery.customurl}`)) {
             res.json({ "code" : "error" , "message" : "해당 URL이 이미 존재합니다. 다른 커스텀 URL을 사용하거나 랜덤 URL을 사용해주세요." });
             return;
