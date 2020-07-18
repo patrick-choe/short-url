@@ -54,7 +54,9 @@ app.post('/create', (req, res, next) => {
     else {
         rs = utils.randomstring(parsedQuery.domain, 6);
     }
-    urls[`${parsedQuery.domain}||${rs}`] = parsedQuery.url;
+    urls[`${parsedQuery.domain}||${rs}`] = {};
+    urls[`${parsedQuery.domain}||${rs}`]['url'] = parsedQuery.url;
+    urls[`${parsedQuery.domain}||${rs}`]['created_by'] = req.user.id;
     res.json({ "code" : "success" , "url" : `${protocol}${parsedQuery.domain}/${rs}` });
     fs.writeFileSync('./data.json', JSON.stringify(urls));
 

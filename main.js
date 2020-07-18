@@ -59,7 +59,7 @@ app.use((req, res, next) => {
     const urls = JSON.parse(fs.readFileSync('./data.json'));
     const json_name = `${req.hostname}||${req.url.replace('/', '')}`;
     if(urls.hasOwnProperty(json_name)) {
-        res.redirect(urls[json_name]);
+        res.redirect(urls[json_name]['url']);
         return;
     }
     else {
