@@ -48,18 +48,6 @@ app.set('views', './views');
 app.set('view engine', 'ejs');
 
 app.use((req, res, next) => {
-    const urls = JSON.parse(fs.readFileSync('./data.json'));
-    const json_name = `${req.hostname}||${req.url.replace('/', '')}`;
-    if(urls.hasOwnProperty(json_name)) {
-        res.redirect(urls[json_name]);
-        return;
-    }
-    else {
-        next();
-    }
-});
-
-app.use((req, res, next) => {
     if(req.hostname != setting.MAIN_DOMAIN) {
         res.redirect(`${req.protocol}://${setting.MAIN_DOMAIN}${req.url}`);
         return;
@@ -76,6 +64,18 @@ for(let i in filelist) {
     console.log(`${filelist[i]} 라우터를 불러왔습니다.`);
 }
 console.log('라우터를 모두 불러왔습니다.\n');
+
+app.use((req, res, next) => {
+    const urls = JSON.parse(fs.readFileSync('./data.json'));
+    const json_name = `${req.hostname}||${req.url.replace('/', '')}`;
+    if(urls.hasOwnProperty(json_name)) {
+        res.redirect(urls[json_name]);
+        return;
+    }
+    else {
+        next();
+    }
+});
 
 app.use((req, res, next) => {
     res.redirect('/');
