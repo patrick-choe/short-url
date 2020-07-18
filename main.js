@@ -47,16 +47,6 @@ app.use(express.static(__dirname + "/upload/", staticoptions));
 app.set('views', './views');
 app.set('view engine', 'ejs');
 
-app.use((req, res, next) => {
-    if(req.hostname != setting.MAIN_DOMAIN) {
-        res.redirect(`${req.protocol}://${setting.MAIN_DOMAIN}${req.url}`);
-        return;
-    }
-    else {
-        next();
-    }
-});
-
 console.log('라우터를 불러오는 중...');
 let filelist = fs.readdirSync('./routes');
 for(let i in filelist) {
@@ -70,6 +60,16 @@ app.use((req, res, next) => {
     const json_name = `${req.hostname}||${req.url.replace('/', '')}`;
     if(urls.hasOwnProperty(json_name)) {
         res.redirect(urls[json_name]);
+        return;
+    }
+    else {
+        next();
+    }
+});
+
+app.use((req, res, next) => {
+    if(req.hostname != setting.MAIN_DOMAIN) {
+        res.redirect(`${req.protocol}://${setting.MAIN_DOMAIN}${req.url}`);
         return;
     }
     else {
