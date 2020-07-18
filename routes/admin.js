@@ -46,6 +46,23 @@ app.get('/admin/:page', utils.isAdmin, (req, res, next) => {
                 });
             }
             break;
+        case 'permission_group':
+            const permission = JSON.parse(fs.readFileSync('./permission.json'));
+            if(parsedQuery.group == null || parsedQuery.group == '') {
+                res.render('admin-permission-group-menu');
+            }
+            else {
+                const fakepermission = {
+                    "DAY_LIMIT" : 0,
+                    "ALLOW_CUSTOM_URL" : false
+                }
+                res.render('admin-permission-group-edit', {
+                    parsedQuery : parsedQuery,
+                    permission : permission,
+                    thispermission : permission[parsedQuery.group] || fakepermission
+                });
+            }
+            break;
         default:
             res.redirect('/admin');
     }

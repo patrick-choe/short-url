@@ -43,7 +43,7 @@ app.get(setting.DISCORD_CALLBACK_URL, passport.authenticate('discord', {
     if(userdata[req.user.id] == null) {
         userdata[req.user.id] = {
             "RANK": "USER",
-            "left_count": setting.RANK.USER.DAY_LIMIT
+            "left_count": permission.USER.DAY_LIMIT
         };
     }
     fs.writeFileSync('./userdata.json', JSON.stringify(userdata));

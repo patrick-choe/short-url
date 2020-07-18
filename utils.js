@@ -19,10 +19,11 @@ module.exports.getCount = (req) => {
     const today_date = new Date().getDate();
     const userdata = JSON.parse(fs.readFileSync('./userdata.json'));
     const serverdata = JSON.parse(fs.readFileSync('./server_data.json'));
+    const permission = JSON.parse(fs.readFileSync('./permission.json'));
 
     if(today_date != serverdata.last_reset_date) {
         for(key in userdata) {
-            userdata[key]['left_count'] = setting['RANK'][userdata[key]['RANK']]['DAY_LIMIT'];
+            userdata[key]['left_count'] = permission[userdata[key]['RANK']]['DAY_LIMIT'];
         }
         serverdata.last_reset_date = today_date;
     }
@@ -30,12 +31,6 @@ module.exports.getCount = (req) => {
     fs.writeFileSync('./userdata.json', JSON.stringify(userdata));
     fs.writeFileSync('./server_data.json', JSON.stringify(serverdata));
     return userdata[req.user.id]['left_count'];
-}
-
-module.exports.checkAdmin = (req, res) => {
-    if(!req.isAuthenticated()) {
-        res.redirect('/login');
-    }
 }
 
 module.exports.isAdmin = (req, res, next) => {

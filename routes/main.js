@@ -9,6 +9,7 @@ const setting = require('../setting.json');
 const app = express.Router();
 
 app.get('/', (req, res, next) => {
+    const permission = JSON.parse(fs.readFileSync('./permission.json'));
     const userdb = JSON.parse(fs.readFileSync('./userdata.json'));
     const fakeuserdata = {
 
@@ -29,7 +30,8 @@ app.get('/', (req, res, next) => {
         userdb: userdb,
         userdata: userdata,
         checkAdmin: req.isAuthenticated() && setting.ADMIN.indexOf(req.user.id) != -1,
-        leftcount: utils.getCount(req)
+        leftcount: utils.getCount(req),
+        permission: permission
     });
 });
 

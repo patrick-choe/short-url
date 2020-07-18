@@ -32,7 +32,8 @@
       "views/*",
       "userdata.json",
       "data.json",
-      "server_data.json"
+      "server_data.json",
+      "permission.json"
     ]
   }
 }

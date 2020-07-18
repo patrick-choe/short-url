@@ -4,6 +4,7 @@
     let rank;
     let left_count;
     let userdata;
+    let ALLOW_CUSTOM_URL;
 if(logined) {
     userdata = userdb[user.id];
     username = `${user.username}#${user.discriminator}`;
@@ -20,12 +21,15 @@ if(logined) {
     else {
         avatar = `/img/guest.png`;
     }
+    if(permission[rank]['ALLOW_CUSTOM_URL']) ALLOW_CUSTOM_URL = true;
+    else ALLOW_CUSTOM_URL = false;
 }
 else {
     username = `게스트`;
     avatar = `/img/guest.png`;
     rank = '로그인 후 이용';
     left_count = '로그인 후 이용';
+    ALLOW_CUSTOM_URL = false;
 }
 %>
 
@@ -35,6 +39,15 @@ else {
     <meta charset="utf-8">
     <script src="/js/main.js"></script>
     <link rel="stylesheet" href="/css/main.css">
+    <%if(ALLOW_CUSTOM_URL) {%>
+        <script>
+            ALLOW_CUSTOM_URL = true;
+        </script>
+    <%} else {%>
+        <script>
+            ALLOW_CUSTOM_URL = false;
+        </script>
+    <%}%>
     <title>단축 URL 생성기</title>
 </head>
 
@@ -69,6 +82,9 @@ else {
         <option value="zlib.ml">zlib.ml</option>
         <option value="zlib.tk">zlib.tk</option>
     </select>
+    <%if(ALLOW_CUSTOM_URL) {%>
+        <input id="custom_url" type="url" placeholder="커스텀 단축 URL 뒷자리를 입력해 주세요.">
+    <%}%>
     <div id="info" style="opacity: 1;"></div>
 </div>
 </body>
