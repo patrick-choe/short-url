@@ -15,5 +15,5 @@
     "ADMIN_DISCORD_ID"
   ],
 
-  "SECRET_KEY": "SECRET_KEY"
+  "API_KEY": "SECRET_KEY"
 }

@@ -67,7 +67,7 @@ app.post('/api', (req, res, next) => {
     const parsedUrl = url.parse(req.url);
     const parsedQuery = querystring.parse(parsedUrl.query,'&','=');
     if(parsedQuery.apikey != setting.SECRET_KEY) {
-        res.json({ "code" : "error" , "message" : "시크릿 키가 알맞지 않습니다." });
+        res.json({ "code" : "error" , "message" : "API 키가 알맞지 않습니다." });
         return;
     }
 
