@@ -68,10 +68,23 @@ app.post('/create', (req, res, next) => {
 app.post('/api', (req, res, next) => {
     const parsedUrl = url.parse(req.url);
     const parsedQuery = querystring.parse(parsedUrl.query,'&','=');
-    if(parsedQuery.apikey != setting.API_KEY) {
-        res.json({ "code" : "error" , "message" : "API 키가 알맞지 않습니다." });
+    if(parsedQuery.apikey == null || parsedQuery.apikey == '') {
+        res.json({ "code" : "error" , "message" : "API 키가 필요합니다." });
         return;
     }
+
+    const userid = utils.findUserByApiKey(parsedQuery.apikey);
+    if(userid == null) {
+        res.json({ "code" : "error" , "message" : "API 키가 유효하지 않습니다." });
+    }
+
+    const getCount = utils.getCountForApi(userid);
+    if(getCount < 1 && getCount != -1) {
+        res.json({ "code" : "error" , "message" : "오늘 사용량을 초과하였습니다. 내일 다시 사용해주세요." });
+        return;
+    }
+    const permission = JSON.parse(fs.readFileSync('./permission.json'));
+    const userdata = JSON.parse(fs.readFileSync('./userdata.json'));
 
     const fullurl = `${req.protocol}://${req.hostname}:${setting.PORT}${req.url}`;
     if(!validUrl.isWebUri(parsedQuery.url)) {
@@ -85,7 +98,7 @@ app.post('/api', (req, res, next) => {
 
     const urls = JSON.parse(fs.readFileSync('./data.json'));
     let rs;
-    if(parsedQuery.customurl != '' && parsedQuery.customurl != null) {
+    if(permission[userdata[userid]['RANK']]['ALLOW_CUSTOM_URL'] && parsedQuery.customurl != '' && parsedQuery.customurl != null) {
         if(urls.hasOwnProperty(`${parsedQuery.domain}||${parsedQuery.customurl}`)) {
             res.json({ "code" : "error" , "message" : "해당 URL이 이미 존재합니다. 다른 커스텀 URL을 사용하거나 랜덤 URL을 사용해주세요." });
             return;
@@ -95,10 +108,25 @@ app.post('/api', (req, res, next) => {
     else {
         rs = utils.randomstring(parsedQuery.domain, 6);
     }
-    urls[`${parsedQuery.domain}||${rs}`] = parsedQuery.url;
+    urls[`${parsedQuery.domain}||${rs}`] = {};
+    urls[`${parsedQuery.domain}||${rs}`]['url'] = parsedQuery.url;
+    urls[`${parsedQuery.domain}||${rs}`]['created_by'] = userid;
     res.json({ "code" : "success" , "url" : `${protocol}${parsedQuery.domain}/${rs}` });
     fs.writeFileSync('./data.json', JSON.stringify(urls));
 
+    if(userdata[userid]['left_count'] != -1) userdata[userid]['left_count']--;
+    fs.writeFileSync('./userdata.json', JSON.stringify(userdata));
+
+    const keylog = JSON.parse(fs.readFileSync('./key_log.json'));
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    if(keylog[parsedQuery.apikey] == null) {
+        keylog[parsedQuery.apikey] = [];
+    }
+    keylog[parsedQuery.apikey].unshift(`[${new Date().toString()}] ${ip}가 ${protocol}${parsedQuery.domain}/${rs} URL을 만들었습니다.`);
+    if(keylog[parsedQuery.apikey].length > 20) {
+        keylog[parsedQuery.apikey].splice(0, 1);
+    }
+    fs.writeFileSync('./key_log.json', JSON.stringify(keylog));
     return;
 });
 
@@ -131,6 +159,20 @@ app.get('/removeurl/:url', (req, res, next) => {
     fs.writeFileSync('./data.json', JSON.stringify(urls));
     res.redirect(parsedQuery.redirecturl);
     return;
+});
+
+app.get('/changeapikey', (req, res, next) => {
+    if(!req.isAuthenticated()) {
+        res.redirect('/login');
+        return;
+    }
+    const userdb = JSON.parse(fs.readFileSync('./userdata.json'));
+    const keylog = JSON.parse(fs.readFileSync('./key_log.json'));
+    delete keylog[userdb[req.user.id]['api_key']];
+    userdb[req.user.id]['api_key'] = utils.generateApiKey();
+    fs.writeFileSync('./userdata.json', JSON.stringify(userdb));
+    fs.writeFileSync('./key_log.json', JSON.stringify(keylog));
+    res.redirect('/developers');
 });
 
 module.exports = app;

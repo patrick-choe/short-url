@@ -4,7 +4,9 @@ const session = require('express-session');
 const url = require('url');
 const querystring = require('querystring');
 const fs = require('fs');
+const randomstring = require('randomstring');
 
+const utils = require('../utils');
 const setting = require('../setting.json');
 
 const app = express.Router();
@@ -44,7 +46,8 @@ app.get(setting.DISCORD_CALLBACK_URL, passport.authenticate('discord', {
     if(userdata[req.user.id] == null) {
         userdata[req.user.id] = {
             "RANK": "USER",
-            "left_count": permission.USER.DAY_LIMIT
+            "left_count": permission.USER.DAY_LIMIT,
+            "api_key": utils.generateApiKey()
         };
     }
     fs.writeFileSync('./userdata.json', JSON.stringify(userdata));
