@@ -15,5 +15,10 @@
     "ADMIN_DISCORD_ID"
   ],
 
-  "API_KEY": "SECRET_KEY"
+  "API_KEY": "SECRET_KEY",
+
+  "USE_REDIS": false,
+  "REDIS_HOST": "localhost",
+  "REDIS_PORT": 6379,
+  "REDIS_PASSWORD": ""
 }

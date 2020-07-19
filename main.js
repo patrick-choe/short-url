@@ -5,6 +5,8 @@ const passport = require('passport');
 const fs = require('fs');
 const session = require('express-session');
 const url = require('url');
+const redis = require('redis');
+const RedisStore = require('connect-redis')(session);
 
 const setting = require('./setting.json');
 
@@ -29,11 +31,28 @@ passport.deserializeUser((obj, done) => {
     done(null, obj);
 });
 
-app.use(session({
-    secret: setting.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false
-}));
+if(setting.USE_REDIS) {
+    const client = redis.createClient({
+        host: setting.REDIS_HOST,
+        port: setting.REDIS_PORT,
+        password: setting.REDIS_PASSWORD,
+        logError: true
+    })
+
+    app.use(session({
+        secret: setting.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        store: new RedisStore({ client: client })
+    }));
+}
+else {
+    app.use(session({
+        secret: setting.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false
+    }));
+}
 
 app.use(passport.initialize());
 app.use(passport.session());
