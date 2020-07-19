@@ -2,6 +2,7 @@ const express = require('express');
 const url = require('url');
 const querystring = require('querystring');
 const fs = require('fs');
+const validUrl = require('valid-url');
 
 const utils = require('../utils');
 const setting = require('../setting.json');
@@ -60,6 +61,31 @@ app.get('/admin/:page', utils.isAdmin, (req, res, next) => {
                     parsedQuery : parsedQuery,
                     permission : permission,
                     thispermission : permission[parsedQuery.group] || fakepermission
+                });
+            }
+            break;
+        case 'url':
+            const urls = JSON.parse(fs.readFileSync('./data.json'));
+            if(parsedQuery.url == null || parsedQuery.url == '') {
+                res.render('admin-url-menu');
+            }
+            else {
+                if(validUrl.isWebUri(parsedQuery.url)) {
+                    let string = parsedQuery.url;
+                    string = string.replace('http://', '');
+                    string = string.replace('https://', '');
+                    string = string.replace('/', '||');
+                    res.redirect(`/admin/url?url=${string}`);
+                    return;
+                }
+                const fakedata = {
+                    "url" : "",
+                    "created_by" : ""
+                }
+                res.render('admin-url-edit', {
+                    parsedQuery : parsedQuery,
+                    urls : urls,
+                    thisurl : urls[parsedQuery.url] || fakedata
                 });
             }
             break;

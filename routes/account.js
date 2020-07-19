@@ -40,6 +40,7 @@ app.get(setting.DISCORD_CALLBACK_URL, passport.authenticate('discord', {
     failureRedirect: '/loginfail'
 }), (req, res, next) => {
     const userdata = JSON.parse(fs.readFileSync('./userdata.json'));
+    const permission = JSON.parse(fs.readFileSync('./permission.json'));
     if(userdata[req.user.id] == null) {
         userdata[req.user.id] = {
             "RANK": "USER",

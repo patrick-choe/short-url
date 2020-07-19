@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script>
+        urlname = "<%=parsedQuery.url%>";
+    </script>
+    <script src="/js/admin-url-edit.js"></script>
+    <link rel="stylesheet" href="/css/admin-url-edit.css">
+    <title>URL 관리 - 데이터 수정</title>
+</head>
+
+<body>
+<h1 id="main_title">URL 관리 - <%=parsedQuery.url%></h1>
+<%if(urls[parsedQuery.url] == null) {%>
+    <h3 class="no_exist_user">현재 존재하지 않는 URL을 수정하고 있습니다.</h3>
+    <h3 class="no_exist_user">수정시 데이터에 이 URL이 새로 추가되게 됩니다.</h3>
+<%}%>
+<form action="/editurl/<%=parsedQuery.url%>" method="post">
+    <p>리다이렉트될 URL : <input class="inputbox" type="text" name="url" value="<%=thisurl.url%>"></p>
+    <p>URL 소유자 : <input class="inputbox" type="text" name="created_by" value="<%=thisurl.created_by%>"></p>
+
+    <input class="save_data" type="submit" value="확인">
+</form>
+
+<%if(urls[parsedQuery.url] != null) {%>
+    <button id="remove_url">이 URL 삭제</button>
+<%}%>
+</body>
+</html>

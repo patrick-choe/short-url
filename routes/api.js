@@ -102,4 +102,35 @@ app.post('/api', (req, res, next) => {
     return;
 });
 
+app.post('/editurl/:url', utils.isAdmin, (req, res, next) => {
+    const urls = JSON.parse(fs.readFileSync('./data.json'));
+
+    if(urls[req.params.url] == null) {
+        urls[req.params.url] = {};
+    }
+    urls[req.params.url]['url'] = req.body.url;
+    urls[req.params.url]['created_by'] = req.body.created_by;
+    fs.writeFileSync('./data.json', JSON.stringify(urls));
+    res.redirect(`/admin/url?url=${req.params.url}`);
+    return;
+});
+
+app.get('/removeurl/:url', (req, res, next) => {
+    if(!req.isAuthenticated()) {
+        res.redirect('/login');
+        return;
+    }
+    const urls = JSON.parse(fs.readFileSync('./data.json'));
+    if(setting.ADMIN.indexOf(req.user.id) == -1 && urls[req.params.url]['created_by'] != req.user.id) {
+        res.redirect('/');
+        return;
+    }
+    const parsedUrl = url.parse(req.url);
+    const parsedQuery = querystring.parse(parsedUrl.query,'&','=');
+    delete urls[req.params.url];
+    fs.writeFileSync('./data.json', JSON.stringify(urls));
+    res.redirect(parsedQuery.redirecturl);
+    return;
+});
+
 module.exports = app;

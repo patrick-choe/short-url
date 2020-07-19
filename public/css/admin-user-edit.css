@@ -39,7 +39,7 @@
     left: 30vh;
     bottom: 19vh;
 }
-#remove_group {
+#remove_group, #remove_url {
     margin-top: 1vh;
 }
 #permission_edit {
