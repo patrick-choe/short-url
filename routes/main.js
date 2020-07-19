@@ -35,4 +35,25 @@ app.get('/', (req, res, next) => {
     });
 });
 
+app.get('/manage', (req, res, next) => {
+    if(!req.isAuthenticated()) {
+        res.redirect('/login');
+        return;
+    }
+
+    const urls = JSON.parse(fs.readFileSync('./data.json'));
+    let my_urls = {};
+
+    for(let key in urls) {
+        if(urls[key]['created_by'] == req.user.id) {
+            my_urls[key] = urls[key];
+        }
+    }
+
+    res.render('manage-url', {
+        urls: urls,
+        my_urls: my_urls
+    });
+});
+
 module.exports = app;

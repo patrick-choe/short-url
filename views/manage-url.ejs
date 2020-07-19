@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="/js/manage-url.js"></script>
+    <title>URL 관리 - 유저용</title>
+</head>
+
+<body>
+<h1>URL 관리 - 유저용</h1>
+<h2>이곳에서 자신이 생성한 URL을 삭제할 수 있습니다.</h2>
+
+<%for(let key in my_urls) {%>
+    <h3>URL : <%=key.replace('||', '/')%></h3>
+    <h4>이동되는 URL : <%=my_urls[key]['url']%></h4>
+    <button onclick="deleteurl('<%=key%>');">이 URL 삭제</button>
+<%}%>
+</body>
+</html>
