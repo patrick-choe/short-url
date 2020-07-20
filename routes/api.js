@@ -32,10 +32,17 @@ app.post('/create', (req, res, next) => {
 
     const parsedUrl = url.parse(req.url);
     const parsedQuery = querystring.parse(parsedUrl.query,'&','=');
+
     const fullurl = `${req.protocol}://${req.hostname}:${setting.PORT}${req.url}`;
     if(!validUrl.isWebUri(parsedQuery.url)) {
         res.json({ "code" : "error" , "message" : "주소가 잘못되었습니다." });
         return;
+    }
+    for(let i in setting.IGNORE_SHORT_URL) {
+        if(parsedQuery.url.includes(setting.IGNORE_SHORT_URL[i])) {
+            res.json({ "code" : "error" , "message" : `주소에 허용되지 않은 문자 ${setting.IGNORE_SHORT_URL[i]}가 포함되어 있습니다.` });
+            return;
+        }
     }
     if(parsedQuery.domain == null || parsedQuery.domain == '') {
         res.json({ "code" : "error" , "message" : "Short URL 서버 도메인이 잘못되었습니다." });
@@ -90,6 +97,12 @@ app.post('/api', (req, res, next) => {
     if(!validUrl.isWebUri(parsedQuery.url)) {
         res.json({ "code" : "error" , "message" : "주소가 잘못되었습니다." });
         return;
+    }
+    for(let i in setting.IGNORE_SHORT_URL) {
+        if(parsedQuery.url.includes(setting.IGNORE_SHORT_URL[i])) {
+            res.json({ "code" : "error" , "message" : `주소에 허용되지 않은 문자 ${setting.IGNORE_SHORT_URL[i]}가 포함되어 있습니다.` });
+            return;
+        }
     }
     if(parsedQuery.domain == null || parsedQuery.domain == '') {
         res.json({ "code" : "error" , "message" : "Short URL 서버 도메인이 잘못되었습니다." });

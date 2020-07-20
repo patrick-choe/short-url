@@ -20,5 +20,9 @@
   "USE_REDIS": false,
   "REDIS_HOST": "localhost",
   "REDIS_PORT": 6379,
-  "REDIS_PASSWORD": ""
+  "REDIS_PASSWORD": "",
+
+  "IGNORE_SHORT_URL": [
+    "TYPE_TEXT_YOU_WANT_TO_IGNORE"
+  ]
 }
