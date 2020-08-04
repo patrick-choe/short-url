@@ -1,42 +1,65 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <script src="/js/developers.js"></script>
-    <title>개발자 메뉴</title>
-</head>
-
-<body>
-<h1>개발자 메뉴</h1>
-<h2>API 키</h2>
-<h3>내 API 키 : <%=myuserdb.api_key%></h3>
-<button id="key_renew">API 키 재발급</button>
-<h2 id="toggle_apikey_log">API 키 사용 로그 보기(위가 최신)</h2>
-<div id="apikey_log" hidden>
-    <%for(let i in mykeylog) {%>
-        <h3 class="apikey_log_text"><%=mykeylog[i]%></h3>
-    <%}%>
-</div>
-
-<h2>API 사용 예시</h2>
-<h3>Method : POST</h3>
-<h3>Request URL : https://short.hyonsu.com/api?apikey=<%=myuserdb.api_key%>&url=https://naver.com&domain=zlib.ga</h3>
-<h3>결과 : 도메인이 zlib.ga인 https://naver.com으로 이동하는 short URL을 반환합니다.</h3>
-<h3>결과 예시</h3>
-<h3>{"code":"success","url":"https://zlib.ga/fjOGeQ"}</h3>
-<h2>API 도움말</h2>
-<h3>요청 URL 쿼리</h3>
-<h4>apikey : <a href="/developers">개발자 페이지</a>에서 얻은 API 키를 사용합니다. 이 항목이 누락되면 URL을 받을 수 없습니다.</h4>
-<h5>참고 : API를 사용할 경우 API 키 소유자의 계정에서 하루 URL 사용량이 차감됩니다.</h5>
-<h4>url : short URL이 리다이렉트시킬 URL입니다. 이 항목이 누락되면 URL을 받을 수 없습니다.</h4>
-<h4>domain : short URL 도메인을 선택합니다. 이 항목이 누락되면 URL을 받을 수 없습니다.</h4>
-<h5>domain 종류</h5>
-<h5>1. zlib.ga</h5>
-<h5>2. zlib.cf</h5>
-<h5>3. zlib.gq</h5>
-<h5>4. zlib.ml</h5>
-<h5>5. zlib.tk</h5>
-<h4>customurl : URL 뒤에 붙는 문자열을 직접 지정할 수 있습니다. 이 항목은 누락되어도 됩니다.</h4>
-<h5>정보 : customurl은 이미 존재하는 URL로는 만들 수 없으며, API 키 소유자가 custom URL 생성 권한을 가지고 있어야만 사용 가능합니다.</h5>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="keywords" content="Short, URL, API, Developers">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="PatrickKR">
+        <script src="/js/developers.js"></script>
+        <title>=== 개발자 패널 ===</title>
+    </head>
+    <body>
+        <h1>개발자 메뉴</h1>
+        <hr />
+        <h2>API 키</h2>
+        <h3>내 API 키: <%=myuserdb.api_key%></h3>
+        <button id="key_renew">API 키 재발급</button>
+        <hr />
+        <h2 id="toggle_apikey_log">API 키 사용 로그 보기 (위가 최신)</h2>
+        <div id="apikey_log" hidden>
+            <%for (let i in mykeylog) {%>
+            <h3 class="apikey_log_text"><%=mykeylog[i]%></h3>
+            <%}%>
+        </div>
+        <hr />
+        <h2>API 사용 방법</h2>
+        <h3>Method : POST</h3>
+        <h3>Request URL : https://short.hyonsu.com/api</h3>
+        <table>
+            <tr>
+                <th>FIELD</th>
+                <th>TYPE</th>
+                <th>DESCRIPTION</th>
+            </tr>
+            <tr>
+                <td>apikey</td>
+                <td>String (key)</td>
+                <td>계정의 API 키 (<%=myuserdb.api_key%>)</td>
+            </tr>
+            <tr>
+                <td>domain</td>
+                <td>String (FQDN)</td>
+                <td>URL에서 사용될 도메인 <a href="#domain">목록 보기</a></td>
+            </tr>
+            <tr>
+                <td>customurl</td>
+                <td>String?</td>
+                <td>URL 뒤에 붙을 고유한 문자열, 생략 가능, 권한 있어야 사용 가능, 이미 존재하는 문자열 사용 불가</td>
+            </tr>
+        </table>
+        <div id="domain">
+            <h4>Domain 종류</h5>
+            <h5>1. zlib.ga</h5>
+            <h5>2. zlib.cf</h5>
+            <h5>3. zlib.gq</h5>
+            <h5>4. zlib.ml</h5>
+            <h5>5. zlib.tk</h5>
+        </div>
+        <div id="example">
+            <h4>Example Request</h4>
+            <h5>Request URL : https://short.hyonsu.com/api?apikey=<%=myuserdb.api_key%>&url=https://naver.com&domain=zlib.ga</h3>
+            <h5>Action: 도메인이 zlib.ga인 https://naver.com으로 이동하는 short URL을 반환합니다.</h3>
+            <h5>Result: {"code":"success","url":"https://zlib.ga/fjOGeQ"}</h3>
+        </div>
+    </body>
 </html>
