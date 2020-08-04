@@ -6,60 +6,84 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="PatrickKR">
         <script src="/js/developers.js"></script>
+        <link rel="stylesheet" href="/css/developers.css">
         <title>=== 개발자 패널 ===</title>
     </head>
     <body>
-        <h1>개발자 메뉴</h1>
-        <hr />
-        <h2>API 키</h2>
-        <h3>내 API 키: <%=myuserdb.api_key%></h3>
-        <button id="key_renew">API 키 재발급</button>
-        <hr />
-        <h2 id="toggle_apikey_log">API 키 사용 로그 보기 (위가 최신)</h2>
-        <div id="apikey_log" hidden>
-            <%for (let i in mykeylog) {%>
-            <h3 class="apikey_log_text"><%=mykeylog[i]%></h3>
-            <%}%>
+        <div id="head">
+            <h1>개발자 메뉴</h1>
         </div>
         <hr />
-        <h2>API 사용 방법</h2>
-        <h3>Method : POST</h3>
-        <h3>Request URL : https://short.hyonsu.com/api</h3>
-        <table>
-            <tr>
-                <th>FIELD</th>
-                <th>TYPE</th>
-                <th>DESCRIPTION</th>
-            </tr>
-            <tr>
-                <td>apikey</td>
-                <td>String (key)</td>
-                <td>계정의 API 키 (<%=myuserdb.api_key%>)</td>
-            </tr>
-            <tr>
-                <td>domain</td>
-                <td>String (FQDN)</td>
-                <td>URL에서 사용될 도메인 <a href="#domain">목록 보기</a></td>
-            </tr>
-            <tr>
-                <td>customurl</td>
-                <td>String?</td>
-                <td>URL 뒤에 붙을 고유한 문자열, 생략 가능, 권한 있어야 사용 가능, 이미 존재하는 문자열 사용 불가</td>
-            </tr>
-        </table>
+        <div id="key">
+            <h2 id="key_header">API 키</h2>
+            <h3>내 API 키: <%=myuserdb.api_key%></h3>
+            <button id="key_renew">API 키 재발급</button>
+        </div>
+        <br />
+        <div id="log">
+            <h2 id="toggle_apikey_log">API 키 사용 로그 보기 (위가 최신)</h2>
+            <div id="apikey_log" hidden>
+                
+            </div>
+        </div>
+        <br />
+        <div id="guide">
+            <h2 id="guide_header">API 사용 방법</h2>
+            <h3>Method : POST</h3>
+            <h3>Request URL : https://short.hyonsu.com/api</h3>
+            <table>
+                <tr>
+                    <th>FIELD</th>
+                    <th>TYPE</th>
+                    <th>DESCRIPTION</th>
+                </tr>
+                <tr>
+                    <td>apikey</td>
+                    <td>String (key)</td>
+                    <td>계정의 API 키 (<%=myuserdb.api_key%>)</td>
+                </tr>
+                <tr>
+                    <td>domain</td>
+                    <td>String (FQDN)</td>
+                    <td>URL에서 사용될 도메인 <a bref="#domain">목록 보기</a></td>
+                </tr>
+                <tr>
+                    <td>customurl</td>
+                    <td>String?</td>
+                    <td>URL 뒤에 붙을 고유한 문자열, 생략 가능, 권한 있어야 사용 가능, 이미 존재하는 문자열 사용 불가</td>
+                </tr>
+            </table>
+        </div>
+        <br />
         <div id="domain">
-            <h4>Domain 종류</h5>
-            <h5>1. zlib.ga</h5>
-            <h5>2. zlib.cf</h5>
-            <h5>3. zlib.gq</h5>
-            <h5>4. zlib.ml</h5>
-            <h5>5. zlib.tk</h5>
+            <h3 id="domain_header">Domain 종류</h5>
+            <table>
+                <tr>
+                    <th>URL</th>
+                </tr>
+                <tr>
+                    <td>1. zlib.ga</td>
+                </tr>
+                <tr>
+                    <td>2. zlib.cf</td>
+                </tr>
+                <tr>
+                    <td>3. zlib.gq</td>
+                </tr>
+                <tr>
+                    <td>4. zlib.ml</td>
+                </tr>
+                <tr>
+                    <td>5. zlib.tk</td>
+                </tr>
+            </table>
         </div>
+        <br />
         <div id="example">
-            <h4>Example Request</h4>
-            <h5>Request URL : https://short.hyonsu.com/api?apikey=<%=myuserdb.api_key%>&url=https://naver.com&domain=zlib.ga</h3>
-            <h5>Action: 도메인이 zlib.ga인 https://naver.com으로 이동하는 short URL을 반환합니다.</h3>
-            <h5>Result: {"code":"success","url":"https://zlib.ga/fjOGeQ"}</h3>
+            <h3 id="example_header">Example Request</h3>
+            <h4>Request URL : https://short.hyonsu.com/api?apikey=<%=myuserdb.api_key%>&url=https://naver.com&domain=zlib.ga</h4>
+            <h4>Action: 도메인이 zlib.ga인 https://naver.com으로 이동하는 short URL을 반환합니다.</h4>
+            <h4>Result: {"code":"success","url":"https://zlib.ga/fjOGeQ"}</h4>
         </div>
     </body>
 </html>
